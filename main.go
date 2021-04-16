@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -13,10 +14,13 @@ type Test struct {
 }
 
 func testHandler(w http.ResponseWriter, r *http.Request) {
-	message := "hello"
-	test := Test{Message: message}
-	data, _ := json.Marshal(test)
-	w.Write(data)
+	msg := "hello"
+	t := Test{Message: msg}
+	e := json.NewEncoder(w)
+	if err := e.Encode(t); err != nil {
+		fmt.Println(err)
+		return
+	}
 }
 
 func main() {
